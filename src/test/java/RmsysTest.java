@@ -1,10 +1,11 @@
+import dataProvider.DataProviderClass;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -15,15 +16,14 @@ import java.util.concurrent.TimeUnit;
 public class RmsysTest {
 
     private WebDriver driver;
-    private WebDriverWait wait;
     private String URL = "https://192.168.100.26/";
     private String userName = "EugenBorisik";
     private String password = "qwerty12345";
+    private String URL_HOME_PAGE = "https://192.168.100.26/Home/Index";
 
     @BeforeMethod
     public void setUp() {
         driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, 20);
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(6000, TimeUnit.SECONDS);
         driver.get(URL);
@@ -48,6 +48,36 @@ public class RmsysTest {
             e.printStackTrace();
         }
 
-        WebElement singOutLink = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#welcomeDivContent .sign-out")));
+        new WebDriverWait(driver, 10).until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#welcomeDivContent .sign-out")));
+        Assert.assertEquals(driver.getCurrentUrl(), URL_HOME_PAGE,"[Current URL is different from " + URL_HOME_PAGE + "]");
+    }
+
+    @Test
+    public void addExplicitWaiterTest() {
+        WebElement userNameFildByIdLocator = driver.findElement(By.id("Username"));
+        WebElement passwordFildByIdLocator = driver.findElement(By.id("Password"));
+        WebElement logInButton = driver.findElement(By.id("SubmitButton"));
+
+        userNameFildByIdLocator.sendKeys(userName);
+        passwordFildByIdLocator.sendKeys(password);
+        logInButton.click();
+
+        WebElement officeTab = driver.findElement(By.cssSelector(".tabs-menu #officeMenu"));
+        officeTab.click();
+        new WebDriverWait(driver, 15, 2700).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#search-container>#input-search")));
+        WebElement sortBy = driver.findElement(By.cssSelector(".sbHolder.sbOfficeHolderSelector"));
+        Assert.assertTrue(sortBy.isDisplayed(), "Field Sort By isn't displayed");
+    }
+
+    @Test(dataProvider = "dataForLogin", dataProviderClass = DataProviderClass.class)
+    public void rmsysLoginWithDataProviderTest(String userName, String password) {
+        WebElement userNameFildByIdLocator = driver.findElement(By.id("Username"));
+        WebElement passwordFildByIdLocator = driver.findElement(By.id("Password"));
+        WebElement logInButton = driver.findElement(By.id("SubmitButton"));
+
+        userNameFildByIdLocator.sendKeys(userName);
+        passwordFildByIdLocator.sendKeys(password);
+        logInButton.click();
+        Assert.assertEquals(driver.getCurrentUrl(), URL_HOME_PAGE,"[Current URL is different from " + URL_HOME_PAGE + "]");
     }
 }
