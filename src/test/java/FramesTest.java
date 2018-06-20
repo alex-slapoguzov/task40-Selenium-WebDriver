@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
+
 public class FramesTest {
 
     private WebDriver driver;
@@ -33,10 +34,8 @@ public class FramesTest {
         WebElement frameLocator = driver.findElement(By.id("mce_0_ifr"));
         driver.switchTo().frame(frameLocator);
         WebElement inputField = driver.findElement(By.id("tinymce"));
-        inputField.clear();
+       // inputField.clear();
         inputField.sendKeys(TEXT);
-        WebElement p = driver.findElement(By.xpath("//body[@id=\"tinymce\"]/p"));
-        Assert.assertEquals(p.getText(), TEXT, "Text " + "[" + TEXT + "]" + " is different!");
-
+        Assert.assertTrue(inputField.getText().contains(TEXT),"Text " + "[" + TEXT + "]" + " is different!");
     }
 }
