@@ -11,25 +11,25 @@ import org.testng.annotations.Test;
 import java.util.concurrent.TimeUnit;
 
 
-public class AlertsTest {
+public class AlertTest {
 
+    private final static String SUCCESSFULY_MESSAGE = "You successfuly clicked an alert";
+    private final static String OK_MESSAGE = "You clicked: Ok";
+    private final static String TEXT = "Hello world!";
+    private final static String YOU_ENTERED = "You entered: ";
+    private final static String URL = "https://the-internet.herokuapp.com/javascript_alerts";
+    private final static By jsAlertButtonLocator = By.xpath("//button[@onclick=\"jsAlert()\"]");
+    private final static By jsConfirmButtonLocator = By.xpath("//button[@onclick=\"jsConfirm()\"]");
+    private final static By jsPromptButtonLocator = By.xpath("//button[@onclick=\"jsPrompt()\"]");
+    private final static By inputResult = By.xpath("//p[@id=\"result\"]");
     private WebDriver driver;
     private Alert alert;
-    private String URL = "https://the-internet.herokuapp.com/javascript_alerts";
-    private final String SUCCESSFULY_MESSAGE = "You successfuly clicked an alert";
-    private final String OK_MESSAGE = "You clicked: Ok";
-    private final String TEXT = "Hello world!";
-    private final String YOU_ENTERED = "You entered: ";
-    private By jsAlertButtonLocator = By.xpath("//button[@onclick=\"jsAlert()\"]");
-    private By jsConfirmButtonLocator = By.xpath("//button[@onclick=\"jsConfirm()\"]");
-    private By jsPromptButtonLocator = By.xpath("//button[@onclick=\"jsPrompt()\"]");
-    private By inputResult = By.xpath("//p[@id=\"result\"]");
 
     @BeforeClass
     public void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(5000, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @BeforeMethod

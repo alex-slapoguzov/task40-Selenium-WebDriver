@@ -10,17 +10,17 @@ import org.testng.annotations.Test;
 import java.util.concurrent.TimeUnit;
 
 
-public class FramesTest {
+public class FrameTest {
 
+    private final static String URL = "https://the-internet.herokuapp.com/iframe";
+    private final static String TEXT = "Hello world!";
     private WebDriver driver;
-    private String URL = "https://the-internet.herokuapp.com/iframe";
-    private final String TEXT = "Hello world!";
 
     @BeforeClass
     public void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(6000, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get(URL);
     }
 
@@ -34,8 +34,7 @@ public class FramesTest {
         WebElement frameLocator = driver.findElement(By.id("mce_0_ifr"));
         driver.switchTo().frame(frameLocator);
         WebElement inputField = driver.findElement(By.id("tinymce"));
-       // inputField.clear();
         inputField.sendKeys(TEXT);
-        Assert.assertTrue(inputField.getText().contains(TEXT),"Text " + "[" + TEXT + "]" + " is different!");
+        Assert.assertTrue(inputField.getText().contains(TEXT), "Text " + "[" + TEXT + "]" + " is different!");
     }
 }

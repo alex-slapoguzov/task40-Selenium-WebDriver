@@ -15,17 +15,17 @@ import java.util.concurrent.TimeUnit;
 
 public class RmsysTest {
 
+    private final static String URL = "https://192.168.100.26/";
+    private final static String userName = "EugenBorisik";
+    private final static String password = "qwerty12345";
+    private final static String URL_HOME_PAGE = "https://192.168.100.26/Home/Index";
     private WebDriver driver;
-    private String URL = "https://192.168.100.26/";
-    private String userName = "EugenBorisik";
-    private String password = "qwerty12345";
-    private String URL_HOME_PAGE = "https://192.168.100.26/Home/Index";
 
     @BeforeMethod
     public void setUp() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-        driver.manage().timeouts().implicitlyWait(5000, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get(URL);
     }
 
